@@ -11,7 +11,6 @@ responses:
     - text: |
         Hey {customer_first_name} 👋
         I am your virtual AI assistant that can help you with
-        
         - balance check
         How may I help you, today ?
   
