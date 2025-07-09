@@ -57,7 +57,7 @@ responses:
 
   utter_ask_confirm_recap:
     - text: |
-        Can you confirm that all the inforamtion captured above is accurate:
+        Can you confirm that all the information captured above is accurate:
       buttons:
         - title: "Yes"
           payload: "/SetSlots(confirm_recap=True)"
