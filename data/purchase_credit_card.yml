@@ -1,0 +1,29 @@
+flows:
+  purchase_credit_card:
+    description: facilitates a credit card purchase by collecting card type, delivery preference and address; confirms the provided details
+    steps:
+      - collect: credit_card_type
+        ask_before_filling: True
+      - collect: delivery_type
+        ask_before_filling: True
+      - collect: full_address_from_user
+        ask_before_filling: True
+      - action: utter_display_all_info_provided
+      - collect: confirm_recap
+        ask_before_filling: True
+        next:
+          - if: slots.confirm_recap and slots.delivery_type == "Home"
+            then:
+              - action: utter_delivery_to_home
+              - action: utter_goodbye
+                next: "END"
+          - if: slots.confirm_recap and slots.delivery_type != "Home"
+            then:
+              - action: utter_collect_from_bank
+              - action: utter_goodbye
+                next: "END"
+          - else:
+            - action: utter_more_help_needed_handoff_pattern
+              next: "END"
+
+            

@@ -1,0 +1,74 @@
+version: "3.1"
+slots:
+  credit_card_type:
+    type: text
+    mappings:
+      - type: from_llm
+
+  delivery_type:
+    type: text
+    mappings:
+      - type: from_llm
+  
+  full_address_from_user:
+    type: text
+    mappings:
+      - type: from_llm
+  
+  confirm_recap:
+    type: bool
+    mappings:
+      - type: from_llm
+
+responses:
+  utter_ask_credit_card_type:
+    - text: |
+        Certainly, I can help you with that.
+        what kind of credit card you are looking to buy
+      buttons:
+        - title: "Visa"
+          payload: "/SetSlots(credit_card_type=Visa)"
+        - title: "Master card"
+          payload: "/SetSlots(credit_card_type=Master card)"
+        - title: "American express"
+          payload: "/SetSlots(credit_card_type=American express)"
+  
+  utter_ask_delivery_type:
+    - text: |
+        Okay let's move to the next step of the credit card purchase
+        Would you like your new credit card to be delivered
+      buttons:
+        - title: "at home"
+          payload: "/SetSlots(delivery_type=Home)"
+        - title: "to the closest bank near you"
+          payload: "/SetSlots(delivery_type=Closest bank)"
+  
+  utter_ask_full_address_from_user:
+    - text: |
+        Understood!
+        Can you provide me your full address please?
+  
+  utter_display_all_info_provided:
+    - text: |
+        Let's make sure all information provided are in order
+        Credit card type: {credit_card_type}
+        Delivery type: {delivery_type}
+        Home address: {full_address_from_user}
+
+  utter_ask_confirm_recap:
+    - text: |
+        Can you confirm that all the inforamtion captured above is accurate:
+      buttons:
+        - title: "Yes"
+          payload: "/SetSlots(confirm_recap=True)"
+        - title: "No"
+          payload: "/SetSlots(confirm_recap=False)"
+
+  utter_delivery_to_home:
+    - text: |
+        Thank you! Your credit card order has been placed successfully. It will be delivered to your address within 7-10 business days. If you have any questions, feel free to ask!
+
+  utter_collect_from_bank:
+    - text: |
+        Thank you! Your credit card order has been placed successfully. You can collect it from your selected bank center within 3 business days. Please bring a valid ID for verification when picking it up.
+        
