@@ -3,21 +3,18 @@ flows:
     description: facilitates a credit card purchase by collecting card type, delivery preference and address; confirms the provided details
     steps:
       - collect: credit_card_type
-        ask_before_filling: True
       - collect: delivery_type
-        ask_before_filling: True
       - collect: full_address_from_user
-        ask_before_filling: True
+        # description: To collect full address from user, extract only the address part of the text
       - action: utter_display_all_info_provided
       - collect: confirm_recap
-        ask_before_filling: True
         next:
-          - if: slots.confirm_recap and slots.delivery_type == "Home"
+          - if: slots.confirm_recap and slots.delivery_type = "Home"
             then:
               - action: utter_delivery_to_home
               - action: utter_goodbye
                 next: "END"
-          - if: slots.confirm_recap and slots.delivery_type != "Home"
+          - if: slots.confirm_recap and slots.delivery_type == "Closest bank"
             then:
               - action: utter_collect_from_bank
               - action: utter_goodbye
@@ -25,5 +22,25 @@ flows:
           - else:
             - action: utter_more_help_needed_handoff_pattern
               next: "END"
-
+  pattern_correction:
+    description: Confirm a previous correction of a slot value.
+    steps:
+      - noop: true
+        next:
+          - if: context.is_reset_only
+            then:
+              - action: action_correct_flow_slot
+                next: END
+          - else: confirm_first
+      - id: confirm_first
+        collect: confirm_slot_correction
+        next:
+          - if: not slots.confirm_slot_correction
+            then:
+              - action: utter_not_corrected_previous_input
+                next: END
+          - else:
+              - action: action_correct_flow_slot
+              - action: utter_corrected_previous_input
+                next: END
             

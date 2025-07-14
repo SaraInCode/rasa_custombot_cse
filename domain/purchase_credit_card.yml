@@ -1,21 +1,25 @@
 version: "3.1"
 slots:
   credit_card_type:
-    type: text
-    mappings:
-      - type: from_llm
-
+    type: categorical
+    values:
+      - "Visa"
+      - "Master card"
+      - "American express"
   delivery_type:
-    type: text
-    mappings:
-      - type: from_llm
-  
+    type: categorical
+    values:
+      - "Home"
+      - "Closest bank"
   full_address_from_user:
     type: text
     mappings:
       - type: from_llm
-  
   confirm_recap:
+    type: bool
+    mappings:
+      - type: from_llm
+  confirm_slot_correction:
     type: bool
     mappings:
       - type: from_llm
@@ -71,4 +75,23 @@ responses:
   utter_collect_from_bank:
     - text: |
         Thank you! Your credit card order has been placed successfully. You can collect it from your selected bank center within 3 business days. Please bring a valid ID for verification when picking it up.
-        
+  
+  utter_ask_confirm_slot_correction:
+    - text: >
+        Do you want to update the
+        {% for slot, value in context.corrected_slots.items() %}
+           {{ slot.replace('_',' ') }} to {{ value }}
+        {% endfor %} ?
+      buttons:
+        - title: "Yes"
+          payload: "/SetSlots(confirm_slot_correction=True)"
+        - title: "No, please keep the previous information"
+          payload: "/SetSlots(confirm_slot_correction=False)"
+      metadata:
+        rephrase: True
+        template: jinja
+
+  utter_not_corrected_previous_input:
+    - text: "Ok, I did not correct the previous input."
+      metadata:
+        rephrase: True

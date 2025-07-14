@@ -24,11 +24,11 @@ test_cases:
           - bot_uttered:
               utter_name: utter_ask_full_address_from_user
 
-      - user: "123 Baker Street, Springfield"
+      - user: "123 Rasa Street, Munich"
         assertions:
           - slot_was_set:
               - name: "full_address_from_user"
-                value: "123 Baker Street, Springfield"
+                value: "123 Rasa Street, Munich"
           - bot_uttered:
               utter_name: utter_display_all_info_provided
 
