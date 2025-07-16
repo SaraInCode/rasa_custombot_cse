@@ -14,7 +14,7 @@ flows:
               - action: utter_delivery_to_home
               - action: utter_goodbye
                 next: "END"
-          - if: slots.confirm_recap and slots.delivery_type == "Closest bank"
+          - if: slots.confirm_recap and slots.delivery_type = "Closest bank"
             then:
               - action: utter_collect_from_bank
               - action: utter_goodbye
